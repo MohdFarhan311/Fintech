@@ -1,0 +1,13 @@
+# Dependencies and generated output
+node_modules/
+frontend/build/
+coverage/
+
+# Environment files and local secrets
+.env*
+!.env.example
+!**/.env.example
+
+# Local logs
+npm-debug.log*
+yarn-debug.log*

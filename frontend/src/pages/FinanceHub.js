@@ -1,0 +1,6 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+export default function FinanceHub() {
+  return <main className="page-shell"><header className="page-heading"><div className="section-kicker">CUSTOMER TOOLS</div><h1>Your FlexTenure<br />plan workspace.</h1><p>Review your stored plan records and clearly labelled demo payment history.</p></header><section className="pricing-grid" style={{ maxWidth: 850, margin: 'auto' }}><article className="pricing-card"><div className="section-kicker">PLAN DETAILS</div><h2 style={{ font: '700 18px Manrope' }}>View your plans</h2><p className="muted">See plan amounts, schedules, current balances, and simulated payment attempts.</p><Link className="text-link" to="/customer/dashboard">Open customer dashboard ↗</Link></article><article className="pricing-card featured"><div className="section-kicker">DEMO PAYMENTS</div><h2 style={{ font: '700 18px Manrope' }}>Simulation only</h2><p className="muted">Choose a simulated success or failure outcome. No card or bank details are requested and no real money moves.</p><Link className="text-link" to="/faq">Read demo payment FAQs ↗</Link></article></section><div className="notice" style={{ maxWidth: 850, margin: '24px auto' }}>Receipts are labelled DEMO PAYMENT and do not confirm real payment or settlement.</div></main>;
+}
