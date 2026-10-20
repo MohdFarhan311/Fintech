@@ -1,5 +1,9 @@
 # Application Setup and Deployment
 
+For the separate frontend, backend, and MongoDB container setup, start with
+[DEVOPS.md](DEVOPS.md). It includes the Docker Compose workflow and explains the
+multi-stage image layers.
+
 This guide installs and runs the application on a fresh Ubuntu 22.04 or 24.04 EC2 instance. Start after connecting to the instance over SSH. The procedure installs Git, Node.js, npm, MongoDB, and the application dependencies, then builds and launches the app with a new, empty database.
 
 ## Application overview

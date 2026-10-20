@@ -1,0 +1,8 @@
+# Use npm ci inside the image instead of copying local packages.
+node_modules
+build
+npm-debug.log*
+
+# Keep local secrets and repository history out of the build context.
+.env*
+.git
