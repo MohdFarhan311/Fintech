@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Copy package files first so Docker can cache this dependency layer.
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --no-audit --no-fund && npm cache clean --force
 
 # Copy the app source and create the production build.
 COPY . .
