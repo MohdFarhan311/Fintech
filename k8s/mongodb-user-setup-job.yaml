@@ -1,0 +1,72 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  # Use a new versioned name when you intentionally need to rerun this setup.
+  name: mongodb-user-setup-v3
+  namespace: flextenure
+  labels:
+    app.kubernetes.io/name: mongodb-user-setup
+    app.kubernetes.io/part-of: flextenure
+spec:
+  backoffLimit: 5
+  activeDeadlineSeconds: 600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mongodb-user-setup
+        app.kubernetes.io/part-of: flextenure
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: setup
+          image: mongo:7.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MONGO_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-credentials
+                  key: MONGO_ROOT_USERNAME
+            - name: MONGO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-credentials
+                  key: MONGO_ROOT_PASSWORD
+            - name: MONGO_APP_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-credentials
+                  key: MONGO_APP_USERNAME
+            - name: MONGO_APP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-credentials
+                  key: MONGO_APP_PASSWORD
+          command:
+            - sh
+            - -ec
+            - |
+              until mongosh --quiet --host mongodb \
+                --username "$MONGO_ROOT_USERNAME" \
+                --password "$MONGO_ROOT_PASSWORD" \
+                --authenticationDatabase admin \
+                --eval "db.adminCommand('ping').ok"; do
+                echo "Waiting for MongoDB..."
+                sleep 5
+              done
+
+              exec mongosh --quiet --host mongodb \
+                --username "$MONGO_ROOT_USERNAME" \
+                --password "$MONGO_ROOT_PASSWORD" \
+                --authenticationDatabase admin /scripts/setup.js
+          volumeMounts:
+            - name: setup-script
+              mountPath: /scripts
+              readOnly: true
+      volumes:
+        - name: setup-script
+          configMap:
+            name: mongodb-init
+            items:
+              - key: setup.js
+                path: setup.js
